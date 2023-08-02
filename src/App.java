@@ -3,6 +3,9 @@ package src;
 import javax.swing.JFrame;
 import javax.imageio.ImageIO;
 
+import java.io.File;
+import java.io.IOException;
+
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Image;
@@ -14,17 +17,35 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import java.awt.image.BufferedImage;
 import java.awt.image.BufferStrategy;
+
+import src.Engine.Scene;
+import src.Scenes.Gameplay;
 
 public class App extends Canvas implements Runnable, MouseListener {
 	BufferStrategy bufferstrategy;
-	Graphics graphics;
+	Graphics2D graphics;
+
+	Scene current_scene;
+
+	BufferedImage tiles_texture;
+	Image test;
 
 	public App() {
-		setFocusable(true);
-		setPreferredSize(new Dimension(840, 680));
+		this.setFocusable(true);
+		this.setPreferredSize(new Dimension(840, 680));
 
 		addMouseListener(this);
+
+		// Loads
+		try {
+			tiles_texture = ImageIO.read(new File("data\\tiles-sheet.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		test = tiles_texture.getSubimage(0, 0, 16, 16);
 	}
 
 	void Update() {
@@ -40,11 +61,8 @@ public class App extends Canvas implements Runnable, MouseListener {
 			return;
 		}
 
-		graphics = bufferstrategy.getDrawGraphics();
-		graphics.setColor(Color.gray);
-		graphics.fillRect(0, 0, 840, 680);
-		graphics.setColor(Color.black);
-		graphics.drawString("mov eax, 0", 50, 50);
+		graphics = (Graphics2D) bufferstrategy.getDrawGraphics();
+		graphics.drawImage(test, 0, 0, 60, 60, null);
 
 		bufferstrategy.show();
 	}
@@ -92,7 +110,7 @@ public class App extends Canvas implements Runnable, MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        return;        
+        return;   
     }
 
     @Override

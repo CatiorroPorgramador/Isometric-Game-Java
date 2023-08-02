@@ -1,6 +1,8 @@
 package src.Scenes;
 
-public class Gameplay {
+import src.Engine.Scene;
+
+public class Gameplay extends Scene {
 	public Gameplay() {
 
 	}
